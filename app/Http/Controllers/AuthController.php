@@ -9,6 +9,24 @@ use Log;
 
 class AuthController extends Controller
 {
+    // public function login(Request $request)
+    // {
+    //     Log::debug("Going to authenicate user asd $request->email");
+
+    //     $user = User::where('email', $request->email)->first();
+
+    //     if (!Auth::attempt($request->only('email', 'password'))) {
+    //         return response()->json([
+    //             'message' => 'Invalid login details'
+    //         ], 401);
+    //     }
+    //     Auth::login($user);
+    //     $res = [
+    //         'user' => $user,
+    //         'role' => $user->roles->pluck('name')->toArray(),
+    //     ];
+    //     return response( $res, 201 );
+    // }
     public function login(Request $request)
     {
         Log::debug("Going to authenicate user asd $request->email");
@@ -31,6 +49,7 @@ class AuthController extends Controller
     {
         return response()->json([
             'data' => $request->user(),
+            'role' => $request->user()->roles->pluck('name')->toArray(),
         ]);
     }
 
@@ -52,20 +71,21 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'role_id' => 1,
+        
 
             ]);
+            $user->assignRole('user');
             $user->notify(new \App\Notifications\WelcomeMailNotification($user));
 
             if ($user) {
                 return response()->json([
-                    'status' => 200,
-                    'message' => 'Created Successfully',
+                    'status' => true,
+                    'message' => 'Registered Successfully',
                 ], 200);
                 
             } else {
                 return response()->json([
-                    'status' => 500,
+                    'status' => false,
                     'message' => 'Something Went wrong'
                 ], 500);
             }

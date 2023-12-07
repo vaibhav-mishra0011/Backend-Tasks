@@ -24,17 +24,16 @@ use App\Http\Controllers\TaskController;
 // Route::delete('/task/{id}', [TaskController::class,'destroy']);
 // Route::patch('/task/{id}', [TaskController::class,'updateTask']);
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 
-// });
-Route::middleware('auth:sanctum')->group(function () {
+});
+
+
+
+
+Route::group(['middleware' => ['auth:sanctum']], function(){
     // all routes that require authentication inside this group
-
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
     Route::post('/create', [TaskController::class, 'store']);
     Route::get('/tasks', [TaskController::class, 'index']);
     Route::get('/user/{id}/tasks', [TaskController::class, 'getUserTasks']);
@@ -46,3 +45,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::get('/user', [AuthController::class, 'me']);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Mail\MyTestMail;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -8,6 +9,8 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,19 +23,19 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/test', function () {
-    $user = User::find(43);
-    $user->assignRole('admin');
-    
-    // $user = User::create($input);
-    // $user->assignRole($request->input('roles'));
-    
+// Route::get('/test', function () {
+//     $role = Role::create(['name' => 'user']);
+//     $permission = Permission::create(['name' => 'delete tasks']);
+//     $permission = Permission::create(['name' => 'edit tasks']);
+//     $permission = Permission::create(['name' => 'add tasks']);
+//     $permission = Permission::create(['name' => 'fetch tasks']);
+//     return view("welcome");
+// });
 
-});
 Route::resource('/tasks', TaskController::class)->middleware('isLoggedIn');
 
 Route::get('/', function () {
-    if (Auth::check()) {
+    if(Auth::check()) {
         return redirect('tasks');
     } else {
         return redirect('login');
