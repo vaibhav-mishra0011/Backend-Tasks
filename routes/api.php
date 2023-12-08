@@ -46,3 +46,5 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/user', [AuthController::class, 'me']);
+Route::get('/export', [TaskController::class, 'export']);
+Route::post('/upload', [TaskController::class, 'upload']);
